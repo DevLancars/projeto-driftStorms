@@ -1,50 +1,48 @@
-import React from 'react';
-import { X } from 'lucide-react';
+import { Icon } from './Icon';
 
-export function VehicleComparisonCard({ vehicle, isUserVehicle, onRemove }) {
+export function VehicleComparisonCard({ vehicle, isUserVehicle, indicators, onRemove, onOpenProfile }) {
+  const strengthCount = indicators.strengths.length;
+  const considerationCount = indicators.considerations.length;
+  const summaryLabel = `${strengthCount} ${strengthCount === 1 ? 'ponto forte' : 'pontos fortes'} e ${considerationCount} ${considerationCount === 1 ? 'ponto de atenção' : 'pontos de atenção'}`;
+
   return (
-    <div
-      className={`relative min-w-[140px] max-w-[150px] p-3 rounded-[16px] flex flex-col items-center justify-between text-center transition-all ${
-        isUserVehicle
-          ? 'bg-[#DAC79C] text-[#000000]'
-          : 'bg-[#FFFFFF] text-[#000000]'
-      }`}
-    >
-      {/* Badge / Tag superior */}
-      <div className="w-full flex justify-between items-center mb-1">
-        {isUserVehicle ? (
-          <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-[#000000]/10 text-[#000000]">
-            Seu Veículo
-          </span>
-        ) : (
-          <div className="h-4" /> // Espaçador quando não é o veículo do usuário
-        )}
-        
-        {!isUserVehicle && onRemove && (
-          <button 
-            onClick={onRemove}
-            className="p-1 rounded-full text-[#898989] hover:bg-black/5"
-          >
-            <X size={14} />
+    <article className="comparison-card" style={{ ...styles.card, ...(isUserVehicle ? styles.userCard : {}) }}>
+      <div style={styles.cardHeader}>
+        <span style={styles.badge}>{isUserVehicle ? 'Seu veículo' : vehicle.fuel}</span>
+        {onRemove && (
+          <button className="icon-button" type="button" onClick={onRemove} aria-label={`Remover ${vehicle.make} ${vehicle.model} da comparação`} style={styles.removeButton}>
+            <Icon name="close" size={15} />
           </button>
         )}
       </div>
-
-      {/* Imagem do Veículo */}
-      <div className="h-16 w-full flex items-center justify-center my-2">
-        <img
-          src={vehicle.image}
-          alt={vehicle.name}
-          className="max-h-full max-w-full object-contain"
-        />
+      <img src={vehicle.image} alt="" style={styles.image} />
+      <strong style={styles.name}>{vehicle.make} {vehicle.model}</strong>
+      <span style={styles.year}>{vehicle.year}</span>
+      <div
+        aria-label={summaryLabel}
+        style={styles.indicatorSummary}
+      >
+        <span title="Pontos fortes" style={styles.strengthCount}><Icon name="check" size={11} /> {strengthCount}</span>
+        <span title="Pontos de atenção" style={styles.attentionCount}><Icon name="close" size={11} /> {considerationCount}</span>
       </div>
-
-      {/* Nome do Veículo */}
-      <p className="text-xs font-bold leading-tight line-clamp-2">
-        {vehicle.name}
-      </p>
-    </div>
+      <button className={`text-action profile-button${isUserVehicle ? ' profile-button--owned' : ''}`} type="button" onClick={onOpenProfile} style={styles.profileButton}>
+        <Icon name="info" size={13} /> Informações
+      </button>
+    </article>
   );
 }
 
-
+const styles = {
+  card: { boxSizing: 'border-box', flex: '0 0 182px', width: '182px', minHeight: '260px', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '12px', color: '#fff', backgroundColor: '#171717', border: '1px solid #303030', borderRadius: '14px', textAlign: 'center' },
+  userCard: { color: '#000', backgroundColor: 'var(--dourado-champagne)', borderColor: 'var(--dourado-champagne)' },
+  cardHeader: { display: 'flex', width: '100%', minHeight: '24px', justifyContent: 'space-between', alignItems: 'center' },
+  badge: { fontSize: '9px', fontWeight: '700' },
+  removeButton: { display: 'grid', placeItems: 'center', flexShrink: 0, width: '24px', height: '24px', color: 'inherit', background: 'transparent', borderRadius: '50%' },
+  image: { display: 'block', width: '100%', height: '76px', flexShrink: 0, margin: '8px 0', objectFit: 'cover', borderRadius: '7px' },
+  name: { display: '-webkit-box', width: '100%', minHeight: '30px', overflow: 'hidden', fontSize: '11px', lineHeight: '15px', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' },
+  year: { display: 'grid', placeItems: 'center', minHeight: '16px', marginTop: '3px', fontSize: '10px', opacity: 0.7 },
+  indicatorSummary: { display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', minHeight: '20px', gap: '12px', marginTop: '5px' },
+  strengthCount: { display: 'inline-flex', alignItems: 'center', gap: '2px', color: '#237443', fontSize: '10px', fontWeight: '700' },
+  attentionCount: { display: 'inline-flex', alignItems: 'center', gap: '2px', color: '#8b5a11', fontSize: '10px', fontWeight: '700' },
+  profileButton: { display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '100%', minHeight: '32px', gap: '5px', marginTop: 'auto', padding: '6px 8px', color: 'var(--dourado-champagne)', background: 'rgba(0,0,0,.12)', borderRadius: '7px', fontSize: '10px', fontWeight: '700' },
+};
