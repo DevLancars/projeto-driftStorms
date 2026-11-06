@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { Search, SlidersHorizontal } from 'lucide-react';
 import { VehicleComparisonCard } from '../components/VehicleComparisonCard';
+import '../styles/comparison.css';
 
-// Dados simulados da comparação
 const initialVehicles = [
   {
     id: '1',
-    name: 'BMW 320i GP',
+    name: 'BMW 320i GP 2024',
     isUserVehicle: true,
-    image: 'https://pngimg.com/d/bmw_PNG1710.png', // Substitua pela foto do seu carro sem fundo
-    fipePrice: 'R$ 285k',
+    image: 'https://pngimg.com/d/bmw_PNG1710.png',
+    fipePrice: 'R$ 285.000',
     regionalLowestPrice: 'R$ 272k',
     regionalDistance: '(Raio 50km)',
     isBestOffer: false,
@@ -21,7 +21,7 @@ const initialVehicles = [
     id: '2',
     name: 'BYD Seal 2025',
     isUserVehicle: false,
-    image: 'https://pngimg.com/d/car_PNG102875.png', // Substitua por foto PNG sem fundo
+    image: 'https://pngimg.com/d/car_PNG102875.png',
     fipePrice: 'R$ 296k',
     regionalLowestPrice: 'R$ 289k',
     regionalDistance: '(12 km)',
@@ -34,7 +34,7 @@ const initialVehicles = [
     id: '3',
     name: 'Volvo EX30',
     isUserVehicle: false,
-    image: 'https://pngimg.com/d/car_PNG102857.png', // Substitua por foto PNG sem fundo
+    image: 'https://pngimg.com/d/car_PNG102857.png',
     fipePrice: 'R$ 225k',
     regionalLowestPrice: 'R$ 215k',
     regionalDistance: '(5 km)',
@@ -55,7 +55,7 @@ export function CarComparisonPage() {
 
   return (
     <div className="w-full max-w-[430px] min-h-screen bg-[#000000] text-[#FFFFFF] font-sans mx-auto flex flex-col pb-8">
-      {/* 1. Barra de Busca Superior */}
+      {/* 1. Busca */}
       <div className="p-4 flex items-center gap-3">
         <div className="flex-1 flex items-center bg-[#1A1A1A] border border-[#898989]/30 rounded-xl px-3 py-2.5">
           <Search size={18} className="text-[#898989] mr-2" />
@@ -72,7 +72,7 @@ export function CarComparisonPage() {
         </button>
       </div>
 
-      {/* 2. Carrossel Horizontal de Cards de Veículos */}
+      {/* 2. Carrossel de Cards */}
       <div className="px-4 overflow-x-auto no-scrollbar flex gap-3 pb-4">
         {vehicles.map((v) => (
           <VehicleComparisonCard
@@ -84,10 +84,10 @@ export function CarComparisonPage() {
         ))}
       </div>
 
-      {/* 3. Tabela Comparativa */}
+      {/* 3. Tabela de Especificações */}
       <div className="px-4 mt-2 flex-1">
-        {/* Bloco Tabela FIPE */}
-        <div className="py-3 border-b border-[#898989]/30 grid grid-cols-4 items-center text-xs">
+        {/* FIPE */}
+        <div className="py-3 border-divider grid grid-cols-4 items-center text-xs">
           <span className="text-[#898989] font-medium">Tabela FIPE</span>
           {vehicles.map((v) => (
             <span key={v.id} className="font-bold text-center text-sm">
@@ -96,25 +96,22 @@ export function CarComparisonPage() {
           ))}
         </div>
 
-        {/* Bloco Mener Preço Regional */}
-        <div className="py-4 border-b border-[#898989]/30 grid grid-cols-4 items-start text-xs">
+        {/* Menor Preço Regional */}
+        <div className="py-4 border-divider grid grid-cols-4 items-start text-xs">
           <div className="flex flex-col">
             <span className="text-[#898989] font-medium leading-tight">
-              Mener Preço Regional
+              Menor Preço Regional
             </span>
-            <span className="text-[10px] text-[#898989]/70">
-              (Raio 50km)
-            </span>
+            <span className="text-[10px] text-[#898989]/70">(Raio 50km)</span>
           </div>
 
           {vehicles.map((v) => (
             <div key={v.id} className="flex flex-col items-center">
               <span className="font-bold text-sm">{v.regionalLowestPrice}</span>
               <span className="text-[10px] text-[#898989]">{v.regionalDistance}</span>
-              
-              {/* Badge de Melhor Oferta Regional */}
+
               {v.isBestOffer && (
-                <div className="mt-1 bg-[#DAC79C] text-[#000000] text-[9px] font-bold px-1.5 py-0.5 rounded text-center leading-tight">
+                <div className="mt-1 badge-gold text-[9px] px-1.5 py-0.5 rounded text-center leading-tight">
                   Melhor Oferta Regional
                 </div>
               )}
@@ -122,8 +119,8 @@ export function CarComparisonPage() {
           ))}
         </div>
 
-        {/* Especificações Técnicas */}
-        <div className="py-3 border-b border-[#898989]/20 grid grid-cols-4 items-center text-xs">
+        {/* Especificações */}
+        <div className="py-3 border-divider grid grid-cols-4 items-center text-xs">
           <span className="text-[#898989]">Potência</span>
           {vehicles.map((v) => (
             <span key={v.id} className="text-center font-medium">
@@ -132,7 +129,7 @@ export function CarComparisonPage() {
           ))}
         </div>
 
-        <div className="py-3 border-b border-[#898989]/20 grid grid-cols-4 items-center text-xs">
+        <div className="py-3 border-divider grid grid-cols-4 items-center text-xs">
           <span className="text-[#898989]">Fuel</span>
           {vehicles.map((v) => (
             <span key={v.id} className="text-center font-medium">
@@ -141,7 +138,7 @@ export function CarComparisonPage() {
           ))}
         </div>
 
-        <div className="py-3 border-b border-[#898989]/20 grid grid-cols-4 items-center text-xs">
+        <div className="py-3 border-divider grid grid-cols-4 items-center text-xs">
           <span className="text-[#898989]">0-100km/h</span>
           {vehicles.map((v) => (
             <span key={v.id} className="text-center font-medium">
@@ -151,10 +148,10 @@ export function CarComparisonPage() {
         </div>
       </div>
 
-      {/* 4. Botão de Ação Inferior (CTA) */}
+      {/* 4. CTA */}
       <div className="px-4 mt-6">
         <button className="w-full bg-[#DAC79C] text-[#000000] font-bold py-3.5 rounded-xl hover:bg-[#c9b485] transition-colors text-sm">
-          [ Ver 14 Ofertas Próximas Desses Modelos ]
+          [ Ver 14 Ofertas Próximas Dessas Modelos ]
         </button>
       </div>
     </div>
